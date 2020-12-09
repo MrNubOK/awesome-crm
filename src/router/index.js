@@ -22,7 +22,7 @@ const routes = [
         }
     },
     {
-        path: '/home',
+        path: '/',
         name: 'home',
         component: () => import('../views/Home'),
         meta: {
