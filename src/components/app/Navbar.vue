@@ -43,7 +43,7 @@
     export default {
         name: "Navbar",
         data: () => ({
-            date: new Date(),
+            date: new Date().toLocaleString(),
             interval: null,
             dropdown: null
         }),
@@ -58,7 +58,6 @@
         methods: {
             logout() {
                 this.$router.push('/login?message=logout')
-                this.$router.push('some_url')
             }
         },
         beforeDestroy() {

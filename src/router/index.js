@@ -62,14 +62,6 @@ const routes = [
         }
     },
     {
-        path: '/profile',
-        name: 'profile',
-        component: () => import('../views/Profile'),
-        meta: {
-            layout: 'main'
-        }
-    },
-    {
         path: '/record',
         name: 'record',
         component: () => import('../views/Record'),
