@@ -5,28 +5,35 @@
       <div class="input-field">
         <input
             id="email"
-            type="text"
+            type="email"
+            v-model="email"
+            :class="{ invalid: $v.email.$dirty && (!$v.email.required || !$v.email.email) }"
         >
         <label for="email">Email</label>
-        <small class="helper-text invalid">Email</small>
+        <small class="helper-text invalid" v-if="$v.email.$dirty && !$v.email.required">Email - обязательное поле</small>
+        <small class="helper-text invalid" v-else-if="$v.email.$dirty && !$v.email.email">Некорректный Email</small>
       </div>
       <div class="input-field">
         <input
-            id="password"
+            id="password" v-model="password"
             type="password"
             class="validate"
+            :class="{ invalid: $v.password.$dirty && (!$v.password.required || !$v.password.minLength) }"
         >
         <label for="password">Пароль</label>
-        <small class="helper-text invalid">Password</small>
+        <small class="helper-text invalid" v-if="$v.password.$dirty && !$v.password.required">Пароль - обязательное поле</small>
+        <small class="helper-text invalid" v-else-if="$v.password.$dirty && !$v.password.minLength">Минимальная длина пароля - {{ $v.password.$params.minLength.min }}  символов</small>
       </div>
       <div class="input-field">
         <input
-            id="name"
+            id="name" v-model="name"
             type="text"
             class="validate"
+            :class="{ invalid: $v.name.$dirty && (!$v.name.required || !$v.name.minLength) }"
         >
         <label for="name">Имя</label>
-        <small class="helper-text invalid">Name</small>
+        <small class="helper-text invalid" v-if="$v.name.$dirty && !$v.name.required">Name - обязательное поле</small>
+        <small class="helper-text invalid" v-else-if="$v.name.$dirty && !$v.name.minLength">Минимальная длина имени - {{ $v.name.$params.minLength.min }} символа</small>
       </div>
       <p>
         <label>
@@ -40,6 +47,7 @@
         <button
             class="btn waves-effect waves-light auth-submit"
             type="submit"
+            @click.prevent="send"
         >
           Зарегистрироваться
           <i class="material-icons right">send</i>
@@ -55,8 +63,37 @@
 </template>
 
 <script>
+    import {email, required, minLength} from 'vuelidate/lib/validators'
+
     export default {
-        name: "Registration"
+        name: "Registration",
+        data: () => ({
+            email: '',
+            password: '',
+            name: ''
+        }),
+        validations: {
+            email: {required, email},
+            password: {required, minLength: minLength(6)},
+            name: {required, minLength: minLength(3)}
+        },
+        methods: {
+            send() {
+                if (this.$v.$invalid) {
+                    this.$v.$touch()
+                    return
+                }
+
+                const FormData = {
+                    email: this.email,
+                    password: this.password,
+                    name: this.name
+                }
+
+                console.log(FormData)
+                this.$router.push('/')
+            }
+        }
     }
 </script>
 
