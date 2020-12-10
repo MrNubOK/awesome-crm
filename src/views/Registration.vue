@@ -37,8 +37,9 @@
       </div>
       <p>
         <label>
-          <input type="checkbox" />
+          <input type="checkbox" v-model="agree" />
           <span>С правилами согласен</span>
+          <small class="helper-text invalid" v-if="$v.agree.$dirty && !$v.agree.checked">Согласитесь с условиями</small>
         </label>
       </p>
     </div>
@@ -70,12 +71,14 @@
         data: () => ({
             email: '',
             password: '',
-            name: ''
+            name: '',
+            agree: false
         }),
         validations: {
             email: {required, email},
             password: {required, minLength: minLength(6)},
-            name: {required, minLength: minLength(3)}
+            name: {required, minLength: minLength(3)},
+            agree: {checked: v => v}
         },
         methods: {
             send() {
