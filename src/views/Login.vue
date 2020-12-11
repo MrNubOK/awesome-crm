@@ -68,17 +68,22 @@
             }
         },
         methods: {
-            submitHandler() {
+            async submitHandler() {
                 if (this.$v.$invalid) {
                   this.$v.$touch()
                   return
                 }
-                const FormData = {
+                const formData = {
                   email: this.email,
                   password: this.password
                 }
-                console.log(FormData)
-                this.$router.push('/')
+
+                try {
+                    await this.$store.dispatch('login', formData)
+                    await this.$router.push('/')
+                } catch (e) {
+                    throw e
+                }
             },
         },
     }
