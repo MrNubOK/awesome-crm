@@ -6,6 +6,7 @@ import router from './router'
 import store from './store'
 import 'materialize-css/dist/js/materialize.min'
 import messagePlugin from '@/utils/message.plugin'
+import Loader from "./components/app/Loader";
 
 import firebase from 'firebase/app'
 import 'firebase/auth'
@@ -15,6 +16,7 @@ Vue.config.productionTip = false
 
 Vue.use(messagePlugin)
 Vue.use(Vuelidate)
+Vue.component('Loader', Loader)
 
 // Your web app's Firebase configuration
 var firebaseConfig = {

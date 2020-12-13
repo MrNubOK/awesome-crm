@@ -10,7 +10,8 @@
             :class="{ invalid: $v.email.$dirty && (!$v.email.required || !$v.email.email) }"
         >
         <label for="email">Email</label>
-        <small class="helper-text invalid" v-if="$v.email.$dirty && !$v.email.required">Email - обязательное поле</small>
+        <small class="helper-text invalid" v-if="$v.email.$dirty && !$v.email.required">Email - обязательное
+          поле</small>
         <small class="helper-text invalid" v-else-if="$v.email.$dirty && !$v.email.email">Некорректный Email</small>
       </div>
       <div class="input-field">
@@ -21,8 +22,10 @@
             :class="{ invalid: $v.password.$dirty && (!$v.password.required || !$v.password.minLength) }"
         >
         <label for="password">Пароль</label>
-        <small class="helper-text invalid" v-if="$v.password.$dirty && !$v.password.required">Пароль - обязательное поле</small>
-        <small class="helper-text invalid" v-else-if="$v.password.$dirty && !$v.password.minLength">Минимальная длина пароля - {{ $v.password.$params.minLength.min }}  символов</small>
+        <small class="helper-text invalid" v-if="$v.password.$dirty && !$v.password.required">Пароль - обязательное
+          поле</small>
+        <small class="helper-text invalid" v-else-if="$v.password.$dirty && !$v.password.minLength">Минимальная длина
+          пароля - {{ $v.password.$params.minLength.min }} символов</small>
       </div>
       <div class="input-field">
         <input
@@ -33,11 +36,12 @@
         >
         <label for="name">Имя</label>
         <small class="helper-text invalid" v-if="$v.name.$dirty && !$v.name.required">Name - обязательное поле</small>
-        <small class="helper-text invalid" v-else-if="$v.name.$dirty && !$v.name.minLength">Минимальная длина имени - {{ $v.name.$params.minLength.min }} символа</small>
+        <small class="helper-text invalid" v-else-if="$v.name.$dirty && !$v.name.minLength">Минимальная длина имени - {{
+          $v.name.$params.minLength.min }} символа</small>
       </div>
       <p>
         <label>
-          <input type="checkbox" v-model="agree" />
+          <input type="checkbox" v-model="agree"/>
           <span>С правилами согласен</span>
           <small class="helper-text invalid" v-if="$v.agree.$dirty && !$v.agree.checked">Согласитесь с условиями</small>
         </label>
@@ -57,47 +61,47 @@
 
       <p class="center">
         Уже есть аккаунт?
-        <a href="/">Войти!</a>
+        <router-link to="/login">Войти!</router-link>
       </p>
     </div>
   </form>
 </template>
 
 <script>
-    import {email, required, minLength} from 'vuelidate/lib/validators'
+  import {email, required, minLength} from 'vuelidate/lib/validators'
 
-    export default {
-        name: "Registration",
-        data: () => ({
-            email: '',
-            password: '',
-            name: '',
-            agree: false
-        }),
-        validations: {
-            email: {required, email},
-            password: {required, minLength: minLength(6)},
-            name: {required, minLength: minLength(3)},
-            agree: {checked: v => v}
-        },
-        methods: {
-            send() {
-                if (this.$v.$invalid) {
-                    this.$v.$touch()
-                    return
-                }
-
-                const FormData = {
-                    email: this.email,
-                    password: this.password,
-                    name: this.name
-                }
-
-                console.log(FormData)
-                this.$router.push('/')
-            }
+  export default {
+    name: "Registration",
+    data: () => ({
+      email: '',
+      password: '',
+      name: '',
+      agree: false
+    }),
+    validations: {
+      email: {required, email},
+      password: {required, minLength: minLength(6)},
+      name: {required, minLength: minLength(3)},
+      agree: {checked: v => v}
+    },
+    methods: {
+      async send() {
+        if (this.$v.$invalid) {
+          this.$v.$touch()
+          return
         }
+
+        const FormData = {
+          email: this.email,
+          password: this.password,
+          name: this.name
+        }
+
+        await this.$store.dispatch('register', FormData)
+        this.$router.push('/')
+      }
     }
+  }
 </script>
 
 <style scoped>

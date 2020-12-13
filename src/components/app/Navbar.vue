@@ -16,7 +16,7 @@
               data-target="dropdown"
               ref="dropdown"
           >
-            USER NAME
+            {{ name }}
             <i class="material-icons right">arrow_drop_down</i>
           </a>
 
@@ -40,32 +40,43 @@
 </template>
 
 <script>
-    export default {
-        name: "Navbar",
-        data: () => ({
-            date: new Date().toLocaleString(),
-            interval: null,
-            dropdown: null
-        }),
-        mounted() {
-            this.interval = setInterval(() => {
-                this.date = new Date().toLocaleString()
-            }, 1000)
-            this.dropdown = M.Dropdown.init(this.$refs.dropdown, {
-                constrainWidth: true
-            })
-        },
-        methods: {
-            logout() {
-                this.$router.push('/login?message=logout')
-            }
-        },
-        beforeDestroy() {
-            clearInterval(this.interval)
-            if (this.dropdown && this.dropdown.destroy)
-              this.dropdown.destroy()
-        }
+  export default {
+    name: "Navbar",
+    props: {
+      rates: {
+        type: Object
+      }
+    },
+    data: () => ({
+      date: new Date().toLocaleString(),
+      interval: null,
+      dropdown: null
+    }),
+    mounted() {
+      this.interval = setInterval(() => {
+        this.date = new Date().toLocaleString()
+      }, 1000)
+      this.dropdown = M.Dropdown.init(this.$refs.dropdown, {
+        constrainWidth: true
+      })
+    },
+    computed: {
+      name() {
+        return this.$store.getters.info.name
+      }
+    },
+    methods: {
+      async logout({dispatch}) {
+        await this.$store.dispatch('logout')
+        this.$router.push('/login?message=logout')
+      }
+    },
+    beforeDestroy() {
+      clearInterval(this.interval)
+      if (this.dropdown && this.dropdown.destroy)
+        this.dropdown.destroy()
     }
+  }
 </script>
 
 <style scoped>

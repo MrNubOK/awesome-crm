@@ -1,5 +1,5 @@
 <template>
-  <ul class="sidenav app-sidenav" :class="{ open: value }">
+  <ul class="sidenav app-sidenav open" :class="{ open: value }">
     <router-link
         v-for="link of links" :key="link.url"
         tag="li" active-class="active" :to="link.url" :exact="link.exact">
@@ -9,21 +9,31 @@
 </template>
 
 <script>
-    export default {
-        name: "Sidebar",
-        props: ['value'],
-        data() {
-            return {
-                links: [
-                    {title: 'Счет', url: '/', exact: true},
-                    {title: 'История', url: '/history'},
-                    {title: 'Планирование', url: 'planning'},
-                    {title: 'Новая запись', url: 'detail-record'},
-                    {title: 'Категории', url: 'categories'},
-                ]
-            }
-        }
-    }
+  export default {
+    name: "Sidebar",
+    props: {
+      value: {
+        type: Boolean
+      },
+      rates: {
+        type: Object
+      },
+      date: {
+        type: String
+      }
+    },
+    data() {
+      return {
+        links: [
+          {title: 'Счет', url: '/', exact: true},
+          {title: 'История', url: '/history'},
+          {title: 'Планирование', url: 'planning'},
+          {title: 'Новая запись', url: 'detail-record'},
+          {title: 'Категории', url: 'categories'},
+        ]
+      }
+    },
+  }
 </script>
 
 <style scoped>
